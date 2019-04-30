@@ -43,10 +43,11 @@ node('java-slave') {
  //   git 'https://github.com/isbecks/sonar-coverage-example-java'
 
     checkout([
-        $class: 'GitSCM',
-        branches: scm.branches,
-        extensions: scm.extensions + [[$class: 'CleanCheckout']],
-        userRemoteConfigs: scm.userRemoteConfigs
+         $class: 'GitSCM',
+         branches: scm.branches,
+         doGenerateSubmoduleConfigurations: scm.doGenerateSubmoduleConfigurations,
+         extensions: scm.extensions,
+         userRemoteConfigs: scm.userRemoteConfigs
     ])
   //}
 
