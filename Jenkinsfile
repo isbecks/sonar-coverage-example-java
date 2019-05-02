@@ -38,20 +38,10 @@ pipeline {
 */
 node('java-slave') {
 
-  //clone repo step from specific git URL
- // stage('SCM') {
- //   git 'https://github.com/isbecks/sonar-coverage-example-java'
-
-    checkout([
-         $class: 'GitSCM',
-         branches: scm.branches,
-         doGenerateSubmoduleConfigurations: scm.doGenerateSubmoduleConfigurations,
-         extensions: scm.extensions,
-         userRemoteConfigs: scm.userRemoteConfigs
-    ])
-  //}
-
-  
+ //clone repo step from specific git URL
+ stage('SCM') {
+   git 'https://github.com/isbecks/sonar-coverage-example-java'
+ }
 
   //clean workspace and compile the source code
   stage("build") {
@@ -74,7 +64,6 @@ node('java-slave') {
 
   //perform quality gate step setting the time and retrieving the status from sonar webhook and then pass the QG status
   stage("Quality Gate"){
-    
     timeout(time: 5, unit: 'MINUTES') {
       def qg = waitForQualityGate()
       if ((qg.status != 'WARN')&&(qg.status != 'OK')) {
